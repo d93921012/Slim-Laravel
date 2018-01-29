@@ -57,7 +57,7 @@ class Route extends SlimSugar
     {
         $methods = ['any', 'get', 'post'];
 
-        $mm = null;
+        $method = null;
         $n_act = null;
 
         foreach ($methods as $mm) {
@@ -74,15 +74,16 @@ class Route extends SlimSugar
     public static function controllers($controllers)
     {
         $app = static::$slim;
-
+        // dump($controllers);
         foreach ($controllers as $cname => $cntrl) {
             $actions = get_class_methods($cntrl);
+            // dump($actions); exit;
             foreach ($actions as $act) {
                 $c_act = $cntrl.':'.$act;
                 list($method, $n_act) = self::split_act($act);
                 if ($method == 'any') {
                     $app->map(
-                            '/'.$cname.'/'.$n_act, $c_act
+                            '/'.$cname.'/'.$n_act.'(/:param+)', $c_act
                         )->via('GET', 'POST');
                     // add default action
                     if ($n_act == 'index') {

@@ -3,7 +3,6 @@ namespace LAbasic\Statical;
 
 use LAbasic\Session\Service as SessionService;
 
-// class Session extends \Statical\BaseProxy
 class Session extends \Statical\BaseProxy
 {
     public static function __callStatic($method_name, $args) 

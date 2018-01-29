@@ -4,17 +4,18 @@ use App\Lib\Decorator;
 
 echo '<h2>Decorator test</h2>';
 $app = $GLOBALS['app'];
-// Decorator::$sess = $app->session;
-// Decorator::flash('msg', 'test');
 
 $aa = Request::input('aa');
 echo "Request('aa') = {$aa}<br>\n";
-// $foo = new Decorator();
-Session::flash('msg', 'Decorator test');
-Session::put('test', 'Decorator test');
+
+Session::flash('msg', 'Flash session test');
+Session::put('test', 'Session test');
 
 echo Session::get('test');
-// Session::stop_session();
+
+echo '<h2>DB test</h2>';
+$rs = DB::select("select @@version as version;");
+dump($rs);
 
 echo '<h2>ORM test</h2>';
 

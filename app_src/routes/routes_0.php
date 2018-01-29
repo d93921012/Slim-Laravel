@@ -19,13 +19,13 @@ Route::get('/', function() use ($app) {
 
 $app->get('/home', function() use ($app) 
 {
-    $content = View::render('home');
+    $content = View::make('home');
     echo View::render('template', ['content' => $content]);
 });
 
 App::get('/session-write', function() use ($app) 
 {
-    $msg = 'This is my session data write at time: '.date('H:i:s');
+    $msg = 'This session data was written at time: '.date('H:i:s');
     Session::put('test', $msg);
     Session::flash('msg', "This is a flash message.");
     $content = "Write to session: <br>{$msg}";

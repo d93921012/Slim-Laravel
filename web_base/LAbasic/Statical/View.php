@@ -1,18 +1,32 @@
 <?php
 namespace LAbasic\Statical;
 
-class View
+class View extends \Statical\BaseProxy
 {
-    public static function render($template, $data = null)
+    /**
+     * Render shortcut.
+     *
+     * @param  string $view
+     * @param  array  $data
+     * @param  array  $mergeData
+     *
+     * @return string
+     */
+    public static function render($view, $data = [], $mergeData = [])
     {
-        // 改一下檔名，與 Laravel 相容
-        if (substr($template, -4) == '.php') {
-            $template = substr($template, 0, strlen($template)-4);
-        }
-        
-        $template = str_replace('.', '/', $template).'.php';
+        $app = $GLOBALS['app'];
 
-        // Slim\View::render() 是 protected method，不能呼叫
-        return App::view()->fetch($template, $data);
+        return $app->la_container['view']->make($view, $data, $mergeData)->render();
+    }
+
+    public static function __callStatic($method_name, $args)
+    {
+        $app = $GLOBALS['app'];
+
+        // echo 'Calling method ',$method_name,'<br />';
+        return call_user_func_array(
+            array($app->la_container['view'], $method_name),
+            $args
+        );
     }
 }

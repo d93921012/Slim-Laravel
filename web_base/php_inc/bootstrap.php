@@ -9,7 +9,11 @@ require_once BASEDIR.'/web_base/php_inc/helpers.php';
 
 ini_set('date.timezone', 'Asia/Taipei');
 
+$dotenv = new Dotenv\Dotenv(APPDIR);
+$dotenv->load();
+
 $app = new \Slim\Slim([
+            'debug' => env('APP_DEBUG'),
             'log.writer' => new \Slim\Logger\DateTimeFileWriter(['path' => BASEDIR.'/storage/logs']),
             'templates.path' => APPDIR.'/views',
             'settings' => [
@@ -19,8 +23,6 @@ $app = new \Slim\Slim([
             ]
         ]);
 
-$dotenv = new Dotenv\Dotenv(APPDIR);
-$dotenv->load();
 
 if (env('APP_DEBUG') == true) 
 {

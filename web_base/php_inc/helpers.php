@@ -68,3 +68,14 @@ function storage_path()
 {
     return BASEDIR.'/storage';
 }
+
+function session($dat) 
+{
+    if (is_array($dat)) {
+        foreach ($dat as $key => $value) {
+            Session::put($key, $value);
+        }
+    } else {
+        return Session::get($dat);
+    }
+}
