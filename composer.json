@@ -6,11 +6,12 @@
     "require": {
         "slim/slim": "2.*",
         "slim/logger": "*",
-        "illuminate/config": "5.0.*",
-        "illuminate/database": "5.0.*",
-        "illuminate/cache": "5.0.*",
-        "illuminate/session": "5.0.*", 
-        "illuminate/filesystem": "5.0.*",
+        "illuminate/config": "5.1.*",
+        "illuminate/database": "5.1.*",
+        "illuminate/cache": "5.1.*",
+        "illuminate/session": "5.1.*",
+        "illuminate/filesystem": "5.1.*",
+        "illuminate/view": "5.1.*",
         "vlucas/phpdotenv": "*",
         "statical/statical": "1.*",
         "tracy/tracy": "2.4.*"

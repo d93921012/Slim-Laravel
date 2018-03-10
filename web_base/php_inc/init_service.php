@@ -35,8 +35,10 @@ $la_container['request'] = (LAbasic\Http\Request::createFromGlobals());
 // Capsule\Manager will overwrite ['config.database.default']
 // Save the value and restore it later
 $default_conn = $la_container['config']['database.default'];
+$fetch_style = $la_container['config']['database.fetch'];
 $capsule = new Illuminate\Database\Capsule\Manager($la_container);
 // restore ['config.database.default']
+$capsule->setFetchMode($fetch_style);  // 會被蓋掉
 $capsule->getDatabaseManager()->setDefaultConnection($default_conn);
 $capsule->setAsGlobal();
 $capsule->bootEloquent();
