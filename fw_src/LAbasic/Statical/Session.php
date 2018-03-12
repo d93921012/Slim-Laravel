@@ -3,6 +3,7 @@ namespace LAbasic\Statical;
 
 use LAbasic\Session\Service as SessionService;
 
+// class Session extends \Statical\BaseProxy
 class Session extends \Statical\BaseProxy
 {
     public static function __callStatic($method_name, $args) 
@@ -16,8 +17,8 @@ class Session extends \Statical\BaseProxy
 
         // echo 'Calling method ',$method_name,'<br />';
         return call_user_func_array(
-                    array($app->container['session'], $method_name), 
-                    $args
-                );
+            array($app->container['session'], $method_name),
+            $args
+        );
     }
 }

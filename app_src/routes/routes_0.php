@@ -7,7 +7,7 @@
 
 // IIS 6 沒辦法設 rewrite rule，只好費事一點
 Route::get('/', function() use ($app) {
-    $req = $app->request;
+    $req = $app->sl_request;
     dump($req->getRootUri()); 
     if (strpos($_SERVER["REQUEST_URI"], '/index.php') === false) {
         return Redirect::to('index.php/home');
@@ -17,27 +17,27 @@ Route::get('/', function() use ($app) {
     }
 });
 
-$app->get('/home', function() use ($app) 
+Route::get('/home', function() use ($app)
 {
     $content = View::make('home');
-    echo View::render('template', ['content' => $content]);
+    echo View::make('template', ['content' => $content])->render();
 });
 
-App::get('/session-write', function() use ($app) 
+Route::get('/session-write', function() use ($app)
 {
     $msg = 'This session data was written at time: '.date('H:i:s');
     Session::put('test', $msg);
     Session::flash('msg', "This is a flash message.");
     $content = "Write to session: <br>{$msg}";
-    echo View::render('template', ['content' => $content]);
+    echo View::make('template', ['content' => $content]);
 });
 
-$app->get('/session-read', function() use ($app) 
+Route::get('/session-read', function() use ($app)
 {
     $msg = Session::get('test');
     $content = "Get session: {$msg} <br>\n"
             . "Flash: ". Session::get('msg');
-    echo View::render('template', ['content' => $content]);
+    echo View::make('template', ['content' => $content]);
 });
 
 Route::controllers([

@@ -5,6 +5,7 @@ use Carbon\Carbon;
 use Illuminate\Session\SessionInterface;
 use Illuminate\Session\SessionManager as LaravelSessionManager;
 use Slim\Http\Request;
+//use Illuminate\Http\Request;
 use Slim\Http\Response;
 
 // class Middleware extends \Slim\Middleware
@@ -39,13 +40,14 @@ class Service
     {
         $app = $GLOBALS['app'];
         
-        $la_container = $app->container['la_container'];
+        // $la_container = $app->container['la_container'];
+        $la_container = $app->container;
 
         // Filesystem is needed for file based session driver
         // However, it could be initiated somewhere else, like .
         if (! isset($la_container['files'])) {
             $la_container['files'] = function () {
-                return new \Illuminate\Filesystem\Filesystem();
+                return new \Illuminate\Filesystem\Filesystem;
             };
         }
 
@@ -69,7 +71,7 @@ class Service
 
     public function start_sess()
     {
-        $request = $this->app->request;
+        $request = $this->app->sl_request;
 
         // If a session driver has been configured, we will need to start the session here
         // so that the data is ready for an application. Note that the Laravel sessions
@@ -82,7 +84,7 @@ class Service
 
     public function stop_sess()
     {
-        $request = $this->app->request;
+        // $request = $this->app->request;
         $response = $this->app->response;
         if ($this->sessionConfigured())
         {
@@ -158,6 +160,7 @@ class Service
                 'domain' => $c['domain'],
                 'secure' => $secure
             );
+
             if ($this->slimLegacy) {
                 $response->cookies->set($s->getName(), $data);
             } else {
@@ -182,6 +185,7 @@ class Service
     protected function getCookieLifetime()
     {
         $config = $this->manager->getSessionConfig();
+
         return $config['expire_on_close'] ? 0 : Carbon::now()->addMinutes($config['lifetime']);
     }
     /**
@@ -215,7 +219,9 @@ class Service
     private function getSession(Request $request)
     {
         $session = $this->manager->driver();
+
         $cookieData = $this->slimLegacy ? $request->cookies->get($session->getName()) : $request->getCookie($session->getName());
+
         $session->setId($cookieData);
         return $session;
     }

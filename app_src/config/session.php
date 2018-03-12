@@ -26,18 +26,19 @@ return [
 	| false => start when the first session invoke.
 	*/
 
-	'start_always' => true, 
+	// 'start_always' => true,
+    'start_always' => false,
 
-	/*
-	|--------------------------------------------------------------------------
-	| Session Lifetime
-	|--------------------------------------------------------------------------
-	|
-	| Here you may specify the number of minutes that you wish the session
-	| to be allowed to remain idle before it expires. If you want them
-	| to immediately expire on the browser closing, set that option.
-	|
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Session Lifetime
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify the number of minutes that you wish the session
+    | to be allowed to remain idle before it expires. If you want them
+    | to immediately expire on the browser closing, set that option.
+    |
+    */
 
 	'lifetime' => 120,
 
