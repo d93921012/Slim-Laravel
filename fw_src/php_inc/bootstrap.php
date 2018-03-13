@@ -31,6 +31,7 @@ $app = new \Slim\Slim([
         'paths' => (array)$viewPath,
         'compiled' => $cachePath
     ],
+    'csrfCheck' => true,
     'settings' => [
         'displayErrorDetails' => true,
         // You need to tell Slim not to add Content-Length with incorrect value.

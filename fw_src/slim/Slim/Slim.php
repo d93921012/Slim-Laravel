@@ -1059,8 +1059,18 @@ class Slim
             $this->add(new \Slim\Middleware\PrettyExceptions());
         }
 
-        //Invoke middleware and application stack
-        $this->middleware[0]->call();
+        // 是否要檢查 csrf_token
+        if ($this->config('csrfCheck')) {
+            $this->add(new \Slim\Middleware\VerifyCsrfToken());
+        }
+
+        // 處理 middleware 丟出的 Exception
+        try {
+            //Invoke middleware and application stack
+            $this->middleware[0]->call();
+        } catch (\Exception $e) {
+            $this->exception_handle($e);
+        }
 
         //Fetch status, header, and body
         list($status, $headers, $body) = $this->response->finalize();
@@ -1145,17 +1155,7 @@ class Slim
         } catch (\Slim\Exception\Stop $e) {
             $this->response()->write(ob_get_clean());
         } catch (\Exception $e) {
-            if ($this->config('debug')) {
-                ob_end_clean();
-                throw $e;
-            } else {
-                try {
-                    $this->response()->write(ob_get_clean());
-                    $this->error($e);
-                } catch (\Slim\Exception\Stop $e) {
-                    // Do nothing
-                }
-            }
+            $this->exception_handle($e);
         }
     }
 
@@ -1163,6 +1163,20 @@ class Slim
     * Error Handling and Debugging
     *******************************************************************************/
 
+    public function exception_handle($e)
+    {
+        if ($this->config('debug')) {
+            ob_end_clean();
+            throw $e;
+        } else {
+            try {
+                $this->response()->write(ob_get_clean());
+                $this->error($e);
+            } catch (\Slim\Exception\Stop $e) {
+                // Do nothing
+            }
+        }
+    }
     /**
      * Convert errors into ErrorException objects
      *

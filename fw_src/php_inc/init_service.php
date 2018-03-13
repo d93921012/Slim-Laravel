@@ -70,12 +70,15 @@ $app->hook('slim.after.router', function () {
 });
 
 // Customize error handlers.
-$vpath = $app->config('templates.path');
-$notFound_handler = $la_container['config']['app.handlers.notFound'];
+// $vpath = $app->config('templates.path');
+
+$vpath = $viewPath;
+
+ $notFound_handler = $la_container['config']['app.handlers.notFound'];
 if ($notFound_handler != '') {
     if (file_exists($vpath.'/'.$notFound_handler)) {
         $app->notFound(function () use ($app, $notFound_handler) {
-            $app->render($notFound_handler);
+            View::make($notFound_handler)->render();
         });
     }
 }
@@ -86,10 +89,10 @@ if ($app->config('debug') == false)
 
    if ($error_handler != '') 
    {
-        if (file_exists($vpath.'/'.$error_handler)) 
+        if (file_exists($vpath.'/'.$error_handler))
         {
             $app->error(function (\Exception $e) use ($app, $error_handler) {
-                $app->render($error_handler);
+                return View::make($error_handler)->render();
             });
         }
    }

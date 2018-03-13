@@ -19,13 +19,15 @@ class Coucur
         }
 
         $content .= "<br><a href='".url('cou_cur/redirect-tst')."'>Redirect Test</a>";
-        echo View::make('template', ['content' => $content]);
+        echo View::make('template', ['content' => $content])
+            ->render();
     }
 
     public function anyForm_tst()
     {
         $content = View::make('form_tst');
-        echo View::make('template', ['content' => $content]);
+        echo View::make('template', ['content' => $content])
+            ->render();
     }
 
     public function anyRedirect_tst($flg=false)

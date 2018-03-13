@@ -1,4 +1,5 @@
 <?php
+
 if ( ! function_exists('env'))
 {
     /**
@@ -58,10 +59,19 @@ function asset($path)
     return trim($base.'/'. trim($path, '/')); 
 }
 
-function csrf_token()
+if ( ! function_exists('csrf_token'))
 {
-    // do nothing ...
-    return '';
+    /**
+     * Get the CSRF token value.
+     *
+     * @return string
+     *
+     * @throws RuntimeException
+     */
+    function csrf_token()
+    {
+        return Session::getToken();
+    }
 }
 
 function storage_path()

@@ -6,6 +6,8 @@ use App\Lib\Decorator;
 echo '<h2>Decorator test</h2>';
 $app = $GLOBALS['app'];
 
+echo "token: ".Session::token()."<br>\n";
+
 $aa = Request::input('aa');
 echo "Request('aa') = {$aa}<br>\n";
 
