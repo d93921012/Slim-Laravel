@@ -19,24 +19,29 @@ ini_set('date.timezone', 'Asia/Taipei');
 $dotenv = new Dotenv\Dotenv(APPDIR);
 $dotenv->load();
 
+$logger = new \Slim\Logger\MonologWriter(array(
+    'name' => 'slim',
+    'handlers' => [
+        new \Monolog\Handler\ChromePHPHandler(\Monolog\Logger::DEBUG),
+        new \Monolog\Handler\RotatingFileHandler(BASEDIR."/storage/logs/slim.log", 3, \Monolog\Logger::DEBUG)
+    ],
+    'processors' => [
+        new Monolog\Processor\WebProcessor(),
+        new Monolog\Processor\UidProcessor()
+    ]
+));
+
 $viewPath = APPDIR.'/views';
 $cachePath = BASEDIR.'/storage/framework/views';
 
 $app = new \Slim\Slim([
     'debug' => env('APP_DEBUG'),
-    'log.writer' => new \Slim\Logger\DateTimeFileWriter(
-        ['path' => BASEDIR.'/storage/logs']
-    ),
+    'log.writer' => $logger,
     'view' => [
         'paths' => (array)$viewPath,
         'compiled' => $cachePath
     ],
     'csrfCheck' => true,
-    'settings' => [
-        'displayErrorDetails' => true,
-        // You need to tell Slim not to add Content-Length with incorrect value.
-        'addContentLengthHeader' => false,
-    ]
 ]);
 
 // ref -- https://reinir.github.io/articles/http-slim-and-apachebench.html

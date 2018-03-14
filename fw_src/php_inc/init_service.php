@@ -76,11 +76,11 @@ $vpath = $viewPath;
 
  $notFound_handler = $la_container['config']['app.handlers.notFound'];
 if ($notFound_handler != '') {
-    if (file_exists($vpath.'/'.$notFound_handler)) {
-        $app->notFound(function () use ($app, $notFound_handler) {
-            View::make($notFound_handler)->render();
-        });
-    }
+    $app->notFound(function () use ($app, $notFound_handler)
+    {
+        echo View::make($notFound_handler)->render();
+    });
+
 }
 
 if ($app->config('debug') == false) 
@@ -89,11 +89,11 @@ if ($app->config('debug') == false)
 
    if ($error_handler != '') 
    {
-        if (file_exists($vpath.'/'.$error_handler))
+        $app->error(function (\Exception $e) use ($app,$error_handler)
         {
-            $app->error(function (\Exception $e) use ($app, $error_handler) {
-                return View::make($error_handler)->render();
-            });
-        }
+            $app->getLog()->error($e);
+            echo View::make($error_handler)->render();
+        });
+
    }
 }

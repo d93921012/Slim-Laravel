@@ -284,7 +284,10 @@ class Slim
             // HTTP
             'http.version' => '1.1',
             // Routing
-            'routes.case_sensitive' => true
+            'routes.case_sensitive' => true,
+            // Verify csrf token
+            // 發展中，必要時，把它 disable 掉
+            'csrfCheck' => true
         );
     }
 
@@ -1069,7 +1072,7 @@ class Slim
             //Invoke middleware and application stack
             $this->middleware[0]->call();
         } catch (\Exception $e) {
-            $this->exception_handle($e);
+            $this->handleException($e);
         }
 
         //Fetch status, header, and body
@@ -1155,7 +1158,7 @@ class Slim
         } catch (\Slim\Exception\Stop $e) {
             $this->response()->write(ob_get_clean());
         } catch (\Exception $e) {
-            $this->exception_handle($e);
+            $this->handleException($e);
         }
     }
 
@@ -1163,7 +1166,7 @@ class Slim
     * Error Handling and Debugging
     *******************************************************************************/
 
-    public function exception_handle($e)
+    public function handleException($e)
     {
         if ($this->config('debug')) {
             ob_end_clean();

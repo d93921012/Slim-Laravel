@@ -17,6 +17,7 @@
     "illuminate/routing": "5.0.*",
     "illuminate/session": "5.0.*",
     "illuminate/view": "5.0.*",
+    "monolog/monolog": "1.6.*",
     "vlucas/phpdotenv": "*",
     "statical/statical": "1.*",
     "tracy/tracy": "2.4.*"
@@ -24,7 +25,6 @@
   "autoload": {
     "psr-4": {
       "Slim\\": "fw_src/slim/Slim",
-      "Slim\\Logger\\": "fw_src/slim/logger",
       "LAbasic\\": "fw_src/LAbasic",
       "App\\": "app_src/app"
     }

@@ -44,4 +44,9 @@ class Coucur
             ."<a href='".url('cou_cur/redirect-tst/true')
             ."'>Redirect to home</a>";
     }
+
+    public function getToken()
+    {
+        return json_encode(['_token' => csrf_token()]);
+    }
 }

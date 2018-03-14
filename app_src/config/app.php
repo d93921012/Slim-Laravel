@@ -5,6 +5,6 @@ return [
     ],
     'handlers' => [
         'error' => 'errors.500',
-        'notFound' => 'errors/404.php',
+        'notFound' => 'errors.404',
     ],
 ];
