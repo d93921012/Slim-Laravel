@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Session\TokenMismatchException;
 // $la_container: Laravel container
 //$app->container->singleton('la_container', function () {
 //    return new Illuminate\Container\Container;
@@ -86,14 +87,24 @@ if ($notFound_handler != '') {
 if ($app->config('debug') == false) 
 {
    $error_handler = $la_container['config']['app.handlers.error'];
+   $token_handler = $la_container['config']['app.handlers.tokenMismatched'];
 
    if ($error_handler != '') 
    {
-        $app->error(function (\Exception $e) use ($app,$error_handler)
-        {
-            $app->getLog()->error($e);
-            echo View::make($error_handler)->render();
-        });
+        $app->error(
+            function (\Exception $e)
+            use ($app, $error_handler, $token_handler)
+            {
+                $app->getLog()->error($e);
+                if ($token_handler != '' &&
+                    $e instanceof TokenMismatchException
+                ) {
+                    echo View::make($token_handler)->render();
+                } else {
+                    echo View::make($error_handler)->render();
+                }
+            }
+        );
 
    }
 }

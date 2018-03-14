@@ -3,7 +3,7 @@ namespace Slim\Middleware;
 
 use Request;
 use Session;
-// use Illuminate\Session\TokenMismatchException;
+use Illuminate\Session\TokenMismatchException;
 
 class VerifyCsrfToken extends \Slim\Middleware
 {
@@ -16,8 +16,8 @@ class VerifyCsrfToken extends \Slim\Middleware
         if (in_array(Request::getMethod(), ['POST', 'PUT', 'DELETE', 'PATCH'])) {
             $submittedToken = Request::input('_token') ?: '' ;
             if ($token != $submittedToken) {
-                throw new \Exception('CSRF Token mismatch');
-                // throw new TokenMismatchException;
+                // throw new \Exception('CSRF Token mismatch');
+                throw new TokenMismatchException;
             }
         }
         $this->next->call();
