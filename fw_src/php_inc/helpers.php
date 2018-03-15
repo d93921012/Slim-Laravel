@@ -43,6 +43,11 @@ if ( ! function_exists('env'))
     }
 }
 
+function app()
+{
+    return $GLOBALS['app'];
+}
+
 function base_url()
 {
     return rtrim(App::request()->getRootUri(), '/');
@@ -87,5 +92,19 @@ function session($dat)
         }
     } else {
         return Session::get($dat);
+    }
+}
+
+if ( ! function_exists('view')) {
+    function view($view = null, $data = array(), $mergeData = array())
+    {
+        $app = $GLOBALS['app'];
+        $xview = $app->container['view'];
+
+        if (func_num_args() === 0) {
+            return $xview;
+        }
+
+        return $xview->make($view, $data, $mergeData);
     }
 }

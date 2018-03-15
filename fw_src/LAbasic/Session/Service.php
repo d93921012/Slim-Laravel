@@ -79,6 +79,8 @@ class Service
         if ($this->sessionConfigured())
         {
             $this->session = $this->startSession($request);
+            // Request::old() 會用到
+            $this->app->container['request']->setSession($this->session);
         }
     }
 

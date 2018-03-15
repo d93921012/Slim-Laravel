@@ -55,6 +55,20 @@ if (env('APP_DEBUG') == true)
 {
     Debugger::enable(Debugger::DEVELOPMENT, BASEDIR.'/storage/logs');
     Debugger::$strictMode = true;
+} else {
+    // 在 Include router 或其他 php file 時，可能出錯
+    // 所以，先設定 handler function
+    $old_error_handler = set_error_handler(
+    function($errno ,  $errstr, $errfile, $errline) use ($app)
+    {
+        echo "error"; exit;
+        $e = new \ErrorException($errstr, $errno, 0, $errfile, $errline);
+        ob_clean();
+        // $app->response->status(500);
+        header("HTTP/1.0 500 Internal Server Error");
+        echo $app->callErrorHandler($e);
+        $app->stop();
+    });
 }
 
 $GLOBAL['app'] = $app;  // 設成 global variable，方便叫用

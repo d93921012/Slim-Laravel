@@ -461,7 +461,8 @@ class Slim
      * @param  \Exception|null $argument
      * @return string
      */
-    protected function callErrorHandler($argument = null)
+    // protected function callErrorHandler($argument = null)
+    public function callErrorHandler($argument = null)
     {
         ob_start();
         if (is_callable($this->error)) {

@@ -9,11 +9,10 @@ class VerifyCsrfToken extends \Slim\Middleware
 {
     public function call()
     {
-        // 取得 session 的 token
-        $token = Session::getToken();
-
         // 比對 session 和 submit 的 token
         if (in_array(Request::getMethod(), ['POST', 'PUT', 'DELETE', 'PATCH'])) {
+            // 取得 session 的 token
+            $token = Session::getToken();
             $submittedToken = Request::input('_token') ?: '' ;
             if ($token != $submittedToken) {
                 // throw new \Exception('CSRF Token mismatch');
