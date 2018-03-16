@@ -263,6 +263,8 @@ class Slim
             'mode' => 'development',
             // Debugging
             'debug' => true,
+            // 使用外部 error handler, 如 Tracy\Debugger
+            'ext.errHandler' => true,
             // Logging
             'log.writer' => null,
             'log.level' => \Slim\Log::DEBUG,
@@ -1055,7 +1057,10 @@ class Slim
      */
     public function run()
     {
-        set_error_handler(array('\Slim\Slim', 'handleErrors'));
+        // 若不使用外部 debugger，則啟動自己的 debugger
+        if ($this->config('ext.errHandler') == false) {
+            set_error_handler(array('\Slim\Slim', 'handleErrors'));
+        }
 
         //Apply final outer middleware layers
         if ($this->config('debug')) {

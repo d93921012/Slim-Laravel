@@ -95,7 +95,10 @@ if ($app->config('debug') == false)
             function (\Exception $e)
             use ($app, $error_handler, $token_handler)
             {
-                $app->getLog()->error($e);
+                // $app->getLog()->error($e);
+                // 改用 Tracy\Debugger
+                // 只記錄 info，不送 mail
+                Tracy\Debugger::log($e);
                 if ($token_handler != '' &&
                     $e instanceof TokenMismatchException
                 ) {
